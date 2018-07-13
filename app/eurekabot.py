@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, json, url_for, redirect, session, render_template
 from pymessenger.bot import Bot
-# import departures
+from app import departures
 
 ACCESS_TOKEN = 'EAALU1QUBIuYBAGgTmLKgqdgFVw7iVu1t0DU1Tt5GT3xFVcx8TtjqX0SGcPfIu42lU3x1xTFhWcFgvyEpQuvjnLDZB3utNM5KIZBZBqVBMSCwcr7bdY5ZAY2npmwPfycPDfFqjbAZBqBP19nvuT2ZCF50d4juzA5jGY15Yloio2cVqwYAc6jOt1'
 VERIFY_TOKEN = 'eurekafille'
