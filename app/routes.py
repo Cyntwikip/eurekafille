@@ -43,6 +43,14 @@ def send_message(recipient_id, response):
     #print("ID : ", recipient_id)
     bot.send_text_message(recipient_id, response)
     return "success"
+
+def parse_response(recipient_id, response):
+    if response == 'button':
+        choices = ['Image', 'Text']
+        bot.send_button_message(recipient_id, 'Get Started', choices)
+        return "success"
+    else:
+        send_message(recipient_id, response)
     
 @app.route('/api/lrtbot', methods=['GET','POST'])
 def lrtbot():
@@ -93,8 +101,10 @@ def lrtbot():
                     recipient_id = message['sender']['id']
                     response = message['message'].get('text')
                     if response:
-                        response_sent_text = get_message() + '\n' + response
-                        send_message(recipient_id, response_sent_text)
+                        #response_sent_text = response
+                        #send_message(recipient_id, response_sent_text)
+                        parse_response(recipient_id, response)
+                        
                     #if user sends us a GIF, photo,video, or any other non-text item
                     attachments = message['message'].get('attachments')
                     if attachments:
