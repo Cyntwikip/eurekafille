@@ -91,11 +91,13 @@ def lrtbot():
                     # pass
                     #Facebook Messenger ID for user so we know where to send response back to
                     recipient_id = message['sender']['id']
-                    if message['message'].get('text'):
-                        response_sent_text = get_message()
+                    response = message['message'].get('text')
+                    if response:
+                        response_sent_text = get_message() + '\n' + response
                         send_message(recipient_id, response_sent_text)
                     #if user sends us a GIF, photo,video, or any other non-text item
-                    if message['message'].get('attachments'):
+                    attachments = message['message'].get('attachments')
+                    if attachments:
                         response_sent_nontext = get_message()
                         send_message(recipient_id, response_sent_nontext)
         return "Message Processed"
