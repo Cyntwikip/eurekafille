@@ -4,7 +4,7 @@ import pickle
 import pandas as pd
 from pymessenger.bot import Bot
 
-ACCESS_TOKEN = '00df5c46d10622025217c4d18de0b865'
+ACCESS_TOKEN = 'EAALU1QUBIuYBAGgTmLKgqdgFVw7iVu1t0DU1Tt5GT3xFVcx8TtjqX0SGcPfIu42lU3x1xTFhWcFgvyEpQuvjnLDZB3utNM5KIZBZBqVBMSCwcr7bdY5ZAY2npmwPfycPDfFqjbAZBqBP19nvuT2ZCF50d4juzA5jGY15Yloio2cVqwYAc6jOt1'
 VERIFY_TOKEN = 'eurekafille'
 bot = Bot(ACCESS_TOKEN)
 
