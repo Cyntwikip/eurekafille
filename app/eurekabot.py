@@ -86,3 +86,24 @@ def parse_response(recipient_id, response):
     else:
         send_message(recipient_id, get_default_message())
     return
+
+def parse_quickreply(recipient_id, payload):
+    '''
+    Parses the user's quick reply response.
+    '''        
+    
+    response_splitted = payload.split('_')
+    # postback for request directions: ingress
+    if len(response_splitted)==2 and response_splitted[0]=='DepartureIngress':
+        ingress = response_splitted[1]
+        print(ingress)
+        departures.departure_ingress(recipient_id, ingress)
+    # postback for request directions: egress
+    elif len(response_splitted)==3 and response_splitted[0]=='DepartureEgress':
+        ingress = response_splitted[1]
+        egress = response_splitted[2]
+        print(egress)
+        departures.departure_egress(recipient_id, ingress, egress)
+    else:
+        bot.send_text_message(recipient_id, 'Unhandled quick reply')
+    return
