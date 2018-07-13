@@ -51,6 +51,13 @@ def lrtbot():
                     eurekabot.parse_postbacks(recipient_id, postback)
 
                 elif message.get('message'):
+                    #if user sends a quick reply
+                    quick_reply = message['message'].get('quick_reply')
+                    if quick_reply.get('payload'):
+                        payload = quick_reply.get('payload')
+                        eurekabot.parse_quickreply(recipient_id, payload)
+                        break
+
                     #Facebook Messenger ID for user so we know where to send response back to
                     response = message['message'].get('text')
                     if response:
@@ -62,13 +69,6 @@ def lrtbot():
                     if attachments:
                         response_sent_nontext = eurekabot.get_default_message()
                         eurekabot.send_message(recipient_id, response_sent_nontext)
-                        break
-
-                    #if user sends a quick reply
-                    quick_reply = message['message'].get('quick_reply')
-                    if quick_reply.get('payload'):
-                        payload = quick_reply.get('payload')
-                        eurekabot.parse_quickreply(recipient_id, payload)
                         break
 
         return "Message Processed"
