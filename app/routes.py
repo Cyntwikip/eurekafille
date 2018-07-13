@@ -41,7 +41,8 @@ def get_message():
 def send_message(recipient_id, response):
     #sends user the text message provided via input response parameter
     #print("ID : ", recipient_id)
-    bot.send_text_message(recipient_id, response)
+    #bot.send_text_message(recipient_id, response)
+    bot.send_text_message(recipient_id, "This is LRT chatbot")
     return "success"
 
 def parse_response(recipient_id, response):
@@ -99,10 +100,10 @@ def lrtbot():
         if request.headers['Content-Type'] != 'application/json':
             return 'No Json content found'
 
-        print('User has sent something')
+        #print('User has sent something')
         #return str(request)
         output = request.get_json()
-        print(output)
+        print("JSON input: ", output)
         for event in output['entry']:
             messaging = event['messaging']
             for message in messaging:
