@@ -4,9 +4,9 @@ import pickle
 import pandas as pd
 from pymessenger.bot import Bot
 
-bot = Bot(ACCESS_TOKEN)
 ACCESS_TOKEN = 'ACCESS_TOKEN'
 VERIFY_TOKEN = 'eurekafille'
+bot = Bot(ACCESS_TOKEN)
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -23,7 +23,6 @@ def index():
 
     return '<h2>Request method type not supported</h2>' 
 
-@staticmethod
 def verify_fb_token(token_sent):
     #take token sent by facebook and verify it matches the verify token you sent
     #if they match, allow the request, else return an error 
@@ -46,6 +45,7 @@ def send_message(recipient_id, response):
     
 @app.route('/api/lrtbot', methods=['GET','POST'])
 def lrtbot():
+    print('LRT Bot')
     if request.method == 'GET':
         #return 'Request method must be POST'
         # Your verify token. Should be a random string.
@@ -53,8 +53,8 @@ def lrtbot():
             
         # Parse the query params
         #mode = request.arg.get('hub.mode')
-        token = request.arg.get('hub.verify_token')
-        challenge = request.arg.get('hub.challenge')
+        token = request.args.get('hub.verify_token')
+        challenge = request.args.get('hub.challenge')
 
         return verify_fb_token(token)
             
@@ -79,11 +79,14 @@ def lrtbot():
         if request.headers['Content-Type'] != 'application/json':
             return 'No Json content found'
 
+        #return str(request)
         output = request.get_json()
+        print(output)
         for event in output['entry']:
             messaging = event['messaging']
             for message in messaging:
                 if message.get('message'):
+                    # pass
                     #Facebook Messenger ID for user so we know where to send response back to
                     recipient_id = message['sender']['id']
                     if message['message'].get('text'):
