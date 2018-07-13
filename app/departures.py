@@ -76,7 +76,7 @@ def parse_egress(recipient_id, ingress, slicing):
             {
                 "content_type":"text",
                 "title":"More...",
-                "payload":"DepartureEgress_Next"+str(slicing+1)
+                "payload":"DepartureEgress_"+ingress+'_Next'+str(slicing+1)
             }
         )
     

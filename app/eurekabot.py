@@ -103,14 +103,14 @@ def parse_quickreply(recipient_id, payload):
         else:
             departures.parse_egress(recipient_id, ingress, 0)
     # postback for request directions: egress
-    elif len(response_splitted)>=2 and response_splitted[0]=='DepartureEgress':
+    elif len(response_splitted)==3 and response_splitted[0]=='DepartureEgress':
         ingress = response_splitted[1]
-        print(ingress)
-        if ingress.startswith('Next'):
-            slicing = ingress.replace('Next', '')
+        egress = response_splitted[2]
+        print(ingress, egress)
+        if egress.startswith('Next'):
+            slicing = egress.replace('Next', '')
             departures.parse_egress(recipient_id, ingress, int(slicing))
         else:
-            egress = response_splitted[2]
             departures.parse_final(recipient_id, ingress, egress)
     # if 1==2:
     #     pass
