@@ -45,8 +45,49 @@ def send_message(recipient_id, response):
     bot.send_text_message(recipient_id, "This is LRT chatbot")
     return "success"
 
+def parse_postbacks(recipient_id, postback):
+    if postback == 'EUREKAFILLE':
+        #parse_response(recipient_id, 'Get Started')
+        choices = [
+            {
+                "type":"postback",
+                "title":"Directions",
+                "payload":"Request_Directions"
+            },
+            {
+                "type":"postback",
+                "title":"Departure Times",
+                "payload":"Request_Time"
+            },
+            {
+                "type":"postback",
+                "title":"About the LRT1",
+                "payload":"Request_About"
+            },
+            {
+                "type":"postback",
+                "title":"Send Feedback",
+                "payload":"Request_Feedback"
+            },
+        ]
+        bot.send_button_message(recipient_id, 'Hi! How may I help you?', choices)
+
+    elif postback == 'Request_Directions':
+        send_message(recipient_id, 'Dummy directions')
+    elif postback == 'Request_Time':
+        send_message(recipient_id, 'Dummy time')
+    elif postback == 'Request_About':
+        send_message(recipient_id, 'Dummy about')
+    elif postback == 'Request_Feedback':
+        send_message(recipient_id, 'Dummy feedback')
+    else:
+        send_message(recipient_id, 'Unhandled postback')
+    return "success"
+    
+
 def parse_response(recipient_id, response):
-    if response == 'button':
+    
+    if response.lower() == 'button':
         choices = [
             {
                 "type":"postback",
@@ -60,9 +101,12 @@ def parse_response(recipient_id, response):
             },
         ]
         bot.send_button_message(recipient_id, 'Get Started', choices)
-        return "success"
+        
+    elif response.lower() == 'start':
+        parse_postbacks(recipient_id, 'EUREKAFILLE')
     else:
         send_message(recipient_id, response)
+    return "success"
     
 @app.route('/api/lrtbot', methods=['GET','POST'])
 def lrtbot():
@@ -79,23 +123,6 @@ def lrtbot():
         challenge = request.args.get('hub.challenge')
 
         return verify_fb_token(token)
-            
-        # Checks if a token and mode is in the query string of the request
-        # if (mode and token) {
-        
-        #     # Checks the mode and token sent is correct
-        #     if (mode == 'subscribe' and token == VERIFY_TOKEN) {
-            
-        #     # Responds with the challenge token from the request
-        #     #console.log('WEBHOOK_VERIFIED');
-        #     print('WEBHOOK_VERIFIED')
-        #     res.status(200).send(challenge);
-            
-        #     } else {
-        #     # Responds with '403 Forbidden' if verify tokens do not match
-        #     res.sendStatus(403);      
-        #     }
-        # }
     
     elif request.method == 'POST':
         if request.headers['Content-Type'] != 'application/json':
@@ -109,10 +136,17 @@ def lrtbot():
         for event in output['entry']:
             messaging = event['messaging']
             for message in messaging:
+
+                postback = recipient_id = message['postback']['payload']
+                recipient_id = message['sender']['id']
+                parse_postbacks(recipient_id, postback)
+                # if postback == 'EUREKAFILLE':
+                #     parse_response(recipient_id, 'Get Started')
+
                 if message.get('message'):
                     # pass
                     #Facebook Messenger ID for user so we know where to send response back to
-                    recipient_id = message['sender']['id']
+                    #recipient_id = message['sender']['id']
                     response = message['message'].get('text')
                     if response:
                         #response_sent_text = response
