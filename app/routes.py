@@ -136,10 +136,10 @@ def lrtbot():
         for event in output['entry']:
             messaging = event['messaging']
             for message in messaging:
-
+                recipient_id = message['sender']['id']
+                
                 if message.get('postback') and message['postback'].get('payload'):
                     postback = message['postback']['payload']
-                    recipient_id = message['sender']['id']
                     parse_postbacks(recipient_id, postback)
                     # if postback == 'EUREKAFILLE':
                     #     parse_response(recipient_id, 'Get Started')
