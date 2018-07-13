@@ -53,7 +53,8 @@ def lrtbot():
                 elif message.get('message'):
                     #if user sends a quick reply
                     quick_reply = message['message'].get('quick_reply')
-                    if quick_reply.get('payload'):
+                    print(quick_reply)
+                    if quick_reply and quick_reply.get('payload'):
                         payload = quick_reply.get('payload')
                         eurekabot.parse_quickreply(recipient_id, payload)
                         break
