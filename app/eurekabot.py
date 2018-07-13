@@ -91,7 +91,7 @@ def parse_quickreply(recipient_id, payload):
     '''
     Parses the user's quick reply response.
     '''        
-    
+    print(payload)
     response_splitted = payload.split('_')
     # postback for request directions: ingress
     if len(response_splitted)==2 and response_splitted[0]=='DepartureIngress':
