@@ -137,12 +137,12 @@ def lrtbot():
             messaging = event['messaging']
             for message in messaging:
 
-                postback = message['postback']['payload']
-                recipient_id = message['sender']['id']
-                if postback:
+                if message.get('postback') and message['postback'].get('payload'):
+                    postback = message['postback']['payload']
+                    recipient_id = message['sender']['id']
                     parse_postbacks(recipient_id, postback)
-                # if postback == 'EUREKAFILLE':
-                #     parse_response(recipient_id, 'Get Started')
+                    # if postback == 'EUREKAFILLE':
+                    #     parse_response(recipient_id, 'Get Started')
 
                 if message.get('message'):
                     # pass
