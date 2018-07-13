@@ -14,10 +14,10 @@ def index():
     if request.method == 'GET':
         
         #return render_template('index.html', labels=labels, categories=cat_list)
-        return '667215252'
+        return 'Get request'
 
     elif request.method == 'POST':
-        return '667215252'
+        return 'Post request'
 
         #return redirect(url_for('predict_kaggle'))
 
@@ -79,6 +79,7 @@ def lrtbot():
         if request.headers['Content-Type'] != 'application/json':
             return 'No Json content found'
 
+        print('User has sent something')
         #return str(request)
         output = request.get_json()
         print(output)
