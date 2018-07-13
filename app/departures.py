@@ -52,7 +52,7 @@ def departure_ingress(recipient_id, ingress):
             continue
         choices.append(
             {
-                "type":"text",
+                "content_type":"text",
                 "title":choice,
                 "payload":"DepartureEgress_"+ingress+'_'+choice
             }
