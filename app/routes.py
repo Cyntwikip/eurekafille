@@ -14,10 +14,10 @@ def index():
     if request.method == 'GET':
         
         #return render_template('index.html', labels=labels, categories=cat_list)
-        return 'Get request'
+        return '667215252'
 
     elif request.method == 'POST':
-        return 'Post request'
+        return '667215252'
 
         #return redirect(url_for('predict_kaggle'))
 
