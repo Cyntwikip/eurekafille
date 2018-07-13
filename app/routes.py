@@ -59,16 +59,16 @@ def parse_postbacks(recipient_id, postback):
                 "title":"Departure Times",
                 "payload":"Request_Time"
             },
-            {
-                "type":"postback",
-                "title":"About the LRT1",
-                "payload":"Request_About"
-            },
-            {
-                "type":"postback",
-                "title":"Send Feedback",
-                "payload":"Request_Feedback"
-            },
+            # {
+            #     "type":"postback",
+            #     "title":"About the LRT1",
+            #     "payload":"Request_About"
+            # },
+            # {
+            #     "type":"postback",
+            #     "title":"Send Feedback",
+            #     "payload":"Request_Feedback"
+            # },
         ]
         bot.send_button_message(recipient_id, 'Hi! How may I help you?', choices)
 
@@ -103,6 +103,7 @@ def parse_response(recipient_id, response):
         bot.send_button_message(recipient_id, 'Get Started', choices)
         
     elif response.lower() == 'start':
+        print('Get Started will be displayed! :)')
         parse_postbacks(recipient_id, 'EUREKAFILLE')
     else:
         send_message(recipient_id, response)
