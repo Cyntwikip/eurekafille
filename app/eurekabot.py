@@ -61,17 +61,17 @@ def parse_postbacks(recipient_id, postback):
         bot.send_text_message(recipient_id, 'Dummy about')
     elif postback == 'Request_Feedback':
         bot.send_text_message(recipient_id, 'Dummy feedback')
-    # postback for request directions: ingress
-    elif len(postback_splitted)==2 and postback_splitted[0]=='DepartureIngress':
-        ingress = postback_splitted[1]
-        print(ingress)
-        departures.departure_ingress(recipient_id, ingress)
-    # postback for request directions: egress
-    elif len(postback_splitted)==3 and postback_splitted[0]=='DepartureEgress':
-        ingress = postback_splitted[1]
-        egress = postback_splitted[2]
-        print(egress)
-        departures.departure_egress(recipient_id, ingress, egress)
+    # # postback for request directions: ingress
+    # elif len(postback_splitted)==2 and postback_splitted[0]=='DepartureIngress':
+    #     ingress = postback_splitted[1]
+    #     print(ingress)
+    #     departures.departure_ingress(recipient_id, ingress)
+    # # postback for request directions: egress
+    # elif len(postback_splitted)==3 and postback_splitted[0]=='DepartureEgress':
+    #     ingress = postback_splitted[1]
+    #     egress = postback_splitted[2]
+    #     print(egress)
+    #     departures.departure_egress(recipient_id, ingress, egress)
     else:
         bot.send_text_message(recipient_id, 'Unhandled postback')
     return
@@ -97,13 +97,21 @@ def parse_quickreply(recipient_id, payload):
     if len(response_splitted)==2 and response_splitted[0]=='DepartureIngress':
         ingress = response_splitted[1]
         print(ingress)
-        departures.departure_ingress(recipient_id, ingress)
+        if ingress.startswith('Next'):
+            slicing = ingress.replace('Next', '')
+            departures.parse_ingress(recipient_id, int(slicing))
+        else:
+            departures.parse_egress(recipient_id, ingress, 0)
     # postback for request directions: egress
     elif len(response_splitted)==3 and response_splitted[0]=='DepartureEgress':
         ingress = response_splitted[1]
         egress = response_splitted[2]
-        print(egress)
-        departures.departure_egress(recipient_id, ingress, egress)
+        print(ingress, egress)
+        if egress.startswith('Next'):
+            slicing = egress.replace('Next', '')
+            departures.parse_egress(recipient_id, ingress, int(slicing))
+        else:
+            departures.parse_final(recipient_id, ingress, egress)
     else:
         bot.send_text_message(recipient_id, 'Unhandled quick reply')
     return

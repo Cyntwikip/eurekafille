@@ -32,9 +32,28 @@ def quick_reply_template(text, choices):
         "quick_replies":choices
     }
 
+# def departure_menu(recipient_id, slice=0):
+#     choices = []
+#     temp_stations = stations
+#     for choice in stations[:5]:
+#         choices.append(
+#             {
+#                 "content_type":"text",
+#                 "title":choice,
+#                 "payload":"DepartureIngress_"+choice
+#             }
+#         )
+#     out = quick_reply_template('Departure Times: Entry Station', choices)
+#     bot.send_message(recipient_id, out)
+
 def departure_menu(recipient_id):
+    parse_ingress(recipient_id, 0)
+
+def parse_ingress(recipient_id, slicing):
     choices = []
-    for choice in stations[:5]:
+    chunk_size = 6
+    sliced_stations = [stations[i:i + chunk_size] for i in range(0, len(stations), chunk_size)][slicing]
+    for choice in sliced_stations:
         choices.append(
             {
                 "content_type":"text",
@@ -42,25 +61,60 @@ def departure_menu(recipient_id):
                 "payload":"DepartureIngress_"+choice
             }
         )
+    if chunk_size*(slicing) < len(stations):
+        choices.append(
+            {
+                "content_type":"text",
+                "title":"More...",
+                "payload":"DepartureIngress_Next"+str(slicing+1)
+            }
+        )
+    
     out = quick_reply_template('Departure Times: Entry Station', choices)
     bot.send_message(recipient_id, out)
 
-def departure_ingress(recipient_id, ingress):
+# def departure_ingress(recipient_id, ingress):
+#     choices = []
+#     for choice in stations[:5]:
+#         if choice == ingress:
+#             continue
+#         choices.append(
+#             {
+#                 "content_type":"text",
+#                 "title":choice,
+#                 "payload":"DepartureEgress_"+ingress+'_'+choice
+#             }
+#         )
+#     out = quick_reply_template('Departure Times: Exit Station', choices)
+#     bot.send_message(recipient_id, out)
+
+# def departure_egress(recipient_id, ingress, egress):
+#     bot.send_text_message(recipient_id, 'In: {}, Out: {}'.format(ingress, egress))
+#     #bot.send_button_message(recipient_id, 'Hi! How may I help you?', choices)
+
+def parse_egress(recipient_id, ingress, slicing):
     choices = []
-    for choice in stations[:5]:
-        if choice == ingress:
-            continue
+    chunk_size = 6
+    sliced_stations = [stations[i:i + chunk_size] for i in range(0, len(stations), chunk_size)][slicing]
+    for choice in sliced_stations:
         choices.append(
             {
                 "content_type":"text",
                 "title":choice,
-                "payload":"DepartureEgress_"+ingress+'_'+choice
+                "payload":"DepartureEgress_"+choice
             }
         )
-    out = quick_reply_template('Departure Times: Exit Station', choices)
+    if chunk_size*(slicing) < len(stations):
+        choices.append(
+            {
+                "content_type":"text",
+                "title":"More...",
+                "payload":"DepartureEgress_Next"+str(slicing+1)
+            }
+        )
+    
+    out = quick_reply_template('Departure Times: Entry Station', choices)
     bot.send_message(recipient_id, out)
 
-def departure_egress(recipient_id, ingress, egress):
-    bot.send_message(recipient_id, 'In: {}, Out: {}'.format(ingress, egress))
-    
-    #bot.send_button_message(recipient_id, 'Hi! How may I help you?', choices)
+def parse_final(recipient_id, ingress, egress):
+    bot.send_text_message(recipient_id, 'In: {}, Out: {}'.format(ingress, egress))
