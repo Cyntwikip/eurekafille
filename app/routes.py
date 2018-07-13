@@ -40,6 +40,7 @@ def get_message():
 #uses PyMessenger to send response to user
 def send_message(recipient_id, response):
     #sends user the text message provided via input response parameter
+    print("ID : ", recipient_id)
     bot.send_text_message(recipient_id, response)
     return "success"
     
