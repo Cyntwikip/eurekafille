@@ -39,6 +39,15 @@ def parse_ingress(recipient_id, slicing):
     choices = []
     chunk_size = 6
     sliced_stations = [stations[i:i + chunk_size] for i in range(0, len(stations), chunk_size)][slicing]
+
+    if slicing > 0:
+        choices.append(
+            {
+                "content_type":"text",
+                "title":"Previous",
+                "payload":"DepartureIngress_Prev"+str(slicing-1)
+            }
+        )
     for choice in sliced_stations:
         choices.append(
             {
@@ -63,7 +72,18 @@ def parse_egress(recipient_id, ingress, slicing):
     choices = []
     chunk_size = 6
     sliced_stations = [stations[i:i + chunk_size] for i in range(0, len(stations), chunk_size)][slicing]
+
+    if slicing > 0:
+        choices.append(
+            {
+                "content_type":"text",
+                "title":"Previous",
+                "payload":"DepartureEgress_"+ingress+'_Prev'+str(slicing-1)
+            }
+        )
     for choice in sliced_stations:
+        if choice == ingress:
+            continue
         choices.append(
             {
                 "content_type":"text",
