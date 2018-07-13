@@ -1,6 +1,7 @@
 from app import app
 from flask import Flask, request, jsonify, json, url_for, redirect, session, render_template
-from lib import * 
+from lib import eurekabot 
+from lib import departures
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
