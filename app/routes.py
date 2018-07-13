@@ -46,7 +46,18 @@ def send_message(recipient_id, response):
 
 def parse_response(recipient_id, response):
     if response == 'button':
-        choices = ['Image', 'Text']
+        choices = [
+            {
+                "type":"postback",
+                "title":"Image",
+                "payload":"Eureka_Image"
+            },
+            {
+                "type":"postback",
+                "title":"Text",
+                "payload":"Eureka_Text"
+            },
+        ]
         bot.send_button_message(recipient_id, 'Get Started', choices)
         return "success"
     else:
