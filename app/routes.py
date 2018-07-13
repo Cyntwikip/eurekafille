@@ -68,6 +68,7 @@ def parse_response(recipient_id, response):
 def lrtbot():
     print('LRT Bot')
     if request.method == 'GET':
+        print('LRT Bot Get method')
         #return 'Request method must be POST'
         # Your verify token. Should be a random string.
         #VERIFY_TOKEN = "eurekafille"
@@ -98,6 +99,7 @@ def lrtbot():
     
     elif request.method == 'POST':
         if request.headers['Content-Type'] != 'application/json':
+            print('No header')
             return 'No Json content found'
 
         #print('User has sent something')
