@@ -73,15 +73,15 @@ def parse_postbacks(recipient_id, postback):
         bot.send_button_message(recipient_id, 'Hi! How may I help you?', choices)
 
     elif postback == 'Request_Directions':
-        send_message(recipient_id, 'Dummy directions')
+        bot.send_text_message(recipient_id, 'Dummy directions')
     elif postback == 'Request_Time':
-        send_message(recipient_id, 'Dummy time')
+        bot.send_text_message(recipient_id, 'Dummy time')
     elif postback == 'Request_About':
-        send_message(recipient_id, 'Dummy about')
+        bot.send_text_message(recipient_id, 'Dummy about')
     elif postback == 'Request_Feedback':
-        send_message(recipient_id, 'Dummy feedback')
+        bot.send_text_message(recipient_id, 'Dummy feedback')
     else:
-        send_message(recipient_id, 'Unhandled postback')
+        bot.send_text_message(recipient_id, 'Unhandled postback')
     return "success"
     
 
