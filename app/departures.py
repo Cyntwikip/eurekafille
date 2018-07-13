@@ -61,7 +61,7 @@ def parse_ingress(recipient_id, slicing):
                 "payload":"DepartureIngress_"+choice
             }
         )
-    if chunk_size*(slicing) < len(stations):
+    if chunk_size*(slicing+1) < len(stations):
         choices.append(
             {
                 "content_type":"text",
@@ -104,7 +104,7 @@ def parse_egress(recipient_id, ingress, slicing):
                 "payload":"DepartureEgress_"+choice
             }
         )
-    if chunk_size*(slicing) < len(stations):
+    if chunk_size*(slicing+1) < len(stations):
         choices.append(
             {
                 "content_type":"text",
