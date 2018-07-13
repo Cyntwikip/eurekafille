@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, json, url_for, redirect, session, render_template
-import pickle
-import pandas as pd
 from pymessenger.bot import Bot
+import departures
 
 ACCESS_TOKEN = 'EAALU1QUBIuYBAGgTmLKgqdgFVw7iVu1t0DU1Tt5GT3xFVcx8TtjqX0SGcPfIu42lU3x1xTFhWcFgvyEpQuvjnLDZB3utNM5KIZBZBqVBMSCwcr7bdY5ZAY2npmwPfycPDfFqjbAZBqBP19nvuT2ZCF50d4juzA5jGY15Yloio2cVqwYAc6jOt1'
 VERIFY_TOKEN = 'eurekafille'
@@ -34,6 +33,9 @@ def parse_postbacks(recipient_id, postback):
     '''
     Parses the postback event that was triggered.
     '''
+    
+    postback_splitted = postback.split('_')
+
     if postback == 'EUREKAFILLE':
         #parse_response(recipient_id, 'Get Started')
         choices = [
@@ -53,11 +55,23 @@ def parse_postbacks(recipient_id, postback):
     elif postback == 'Request_Directions':
         bot.send_text_message(recipient_id, 'Dummy directions')
     elif postback == 'Request_Time':
-        bot.send_text_message(recipient_id, 'Dummy time')
+        #bot.send_text_message(recipient_id, 'Dummy time')
+        departures.departure_menu(recipient_id)
     elif postback == 'Request_About':
         bot.send_text_message(recipient_id, 'Dummy about')
     elif postback == 'Request_Feedback':
         bot.send_text_message(recipient_id, 'Dummy feedback')
+    # postback for request directions: ingress
+    elif len(postback_splitted)==2 and postback_splitted[0]=='DepartureIngress':
+        ingress = postback_splitted[1]
+        print(ingress)
+        departures.departure_ingress(recipient_id, ingress)
+    # postback for request directions: egress
+    elif len(postback_splitted)==3 and postback_splitted[0]=='DepartureEgress':
+        ingress = postback_splitted[1]
+        egress = postback_splitted[2]
+        print(egress)
+        departures.departure_egress(recipient_id, ingress, egress)
     else:
         bot.send_text_message(recipient_id, 'Unhandled postback')
     return
