@@ -48,12 +48,12 @@ def parse_ingress(recipient_id, slicing):
                 "payload":"DepartureIngress_Prev"+str(slicing-1)
             }
         )
-    else:
-        choices.append(
-            {
-                "content_type":"location"
-            }
-        )
+    # else:
+    #     choices.append(
+    #         {
+    #             "content_type":"location"
+    #         }
+    #     )
     for choice in sliced_stations:
         choices.append(
             {
@@ -71,7 +71,7 @@ def parse_ingress(recipient_id, slicing):
             }
         )
     
-    out = quick_reply_template('Departure Times: Entry Station', choices)
+    out = quick_reply_template('Entry: '+choice, choices)
     bot.send_message(recipient_id, out)
 
 def parse_egress(recipient_id, ingress, slicing):
@@ -106,8 +106,16 @@ def parse_egress(recipient_id, ingress, slicing):
             }
         )
     
-    out = quick_reply_template('Departure Times: Entry Station', choices)
+    out = quick_reply_template('Exit:'+choice, choices)
     bot.send_message(recipient_id, out)
 
 def parse_final(recipient_id, ingress, egress):
     bot.send_text_message(recipient_id, 'In: {}, Out: {}'.format(ingress, egress))
+
+# def get_location(recipient_id, coordinates):
+#     lat = coordinates['lat']
+#     lon = coordinates['long']
+#     # find nearest station
+#     ingress = 'Roosevelt'
+#     parse_egress(recipient_id, ingress, 0) 
+#     return

@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, json, url_for, redirect, session, render_template
 from pymessenger.bot import Bot
-from app import departures
+from app import departures, directions
 
 ACCESS_TOKEN = 'EAALU1QUBIuYBAGgTmLKgqdgFVw7iVu1t0DU1Tt5GT3xFVcx8TtjqX0SGcPfIu42lU3x1xTFhWcFgvyEpQuvjnLDZB3utNM5KIZBZBqVBMSCwcr7bdY5ZAY2npmwPfycPDfFqjbAZBqBP19nvuT2ZCF50d4juzA5jGY15Yloio2cVqwYAc6jOt1'
 VERIFY_TOKEN = 'eurekafille'
@@ -53,14 +53,15 @@ def parse_postbacks(recipient_id, postback):
         bot.send_button_message(recipient_id, 'Hi! How may I help you?', choices)
 
     elif postback == 'Request_Directions':
-        bot.send_text_message(recipient_id, 'Dummy directions')
+        directions.directions_menu(recipient_id)
     elif postback == 'Request_Time':
-        #bot.send_text_message(recipient_id, 'Dummy time')
         departures.departure_menu(recipient_id)
-    elif postback == 'Request_About':
-        bot.send_text_message(recipient_id, 'Dummy about')
-    elif postback == 'Request_Feedback':
-        bot.send_text_message(recipient_id, 'Dummy feedback')
+
+    # elif postback == 'Request_About':
+    #     bot.send_text_message(recipient_id, 'Dummy about')
+    # elif postback == 'Request_Feedback':
+    #     bot.send_text_message(recipient_id, 'Dummy feedback')
+
     # # postback for request directions: ingress
     # elif len(postback_splitted)==2 and postback_splitted[0]=='DepartureIngress':
     #     ingress = postback_splitted[1]
@@ -93,7 +94,7 @@ def parse_quickreply(recipient_id, payload):
     '''        
     print(payload)
     response_splitted = payload.split('_')
-    # postback for request directions: ingress
+    # postback for request departure: ingress
     if len(response_splitted)==2 and response_splitted[0]=='DepartureIngress':
         ingress = response_splitted[1]
         print(ingress)
@@ -105,7 +106,7 @@ def parse_quickreply(recipient_id, payload):
             departures.parse_ingress(recipient_id, int(slicing))
         else:
             departures.parse_egress(recipient_id, ingress, 0)
-    # postback for request directions: egress
+    # postback for request departure: egress
     elif len(response_splitted)==3 and response_splitted[0]=='DepartureEgress':
         ingress = response_splitted[1]
         egress = response_splitted[2]
@@ -118,8 +119,24 @@ def parse_quickreply(recipient_id, payload):
             departures.parse_egress(recipient_id, ingress, int(slicing))
         else:
             departures.parse_final(recipient_id, ingress, egress)
+    # postback for request directions
+    elif len(response_splitted)==2 and response_splitted[0]=='DirectionIngress':
+        ingress = response_splitted[1]
+        print(ingress)
+        if ingress.startswith('Next'):
+            slicing = ingress.replace('Next', '')
+            directions.parse_ingress(recipient_id, int(slicing))
+        elif ingress.startswith('Prev'):
+            slicing = ingress.replace('Prev', '')
+            directions.parse_ingress(recipient_id, int(slicing))
+        else:
+            directions.parse_station(recipient_id, ingress)
     # if 1==2:
     #     pass
     else:
         bot.send_text_message(recipient_id, 'Unhandled quick reply')
+    return
+
+def directions_get_location(recipient_id, coordinates):
+    directions.get_location(recipient_id, coordinates)
     return

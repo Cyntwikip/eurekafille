@@ -68,9 +68,11 @@ def lrtbot():
                     #if user sends us a GIF, photo,video, or any other non-text item
                     attachments = message['message'].get('attachments')
                     if attachments:
-                        response_sent_nontext = eurekabot.get_default_message()
-                        eurekabot.send_message(recipient_id, response_sent_nontext)
-                        break
+                        attachment_type = attachments['type']
+                        #response for send location in directions option
+                        if attachment_type == 'location':
+                            coordinates = attachments['payload']['coordinates']
+                            eurekabot.directions_get_location(recipient_id, coordinates)
 
         return "Message Processed"
 
