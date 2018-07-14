@@ -38,7 +38,7 @@ def query(time, station1, station2):
                               & (df_distances.end_station==station2),
                               'travel_time']
     
-    target1 = df_distances.loc[(df_distances.start_station==station2)
+    target2 = df_distances.loc[(df_distances.start_station==station2)
                               & (df_distances.end_station==station1),
                               'travel_time']
     
