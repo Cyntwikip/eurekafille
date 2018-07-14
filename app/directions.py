@@ -116,7 +116,7 @@ def get_location(recipient_id, coordinates):
     # find nearest station
     min_dist_index=0
     for i, each in enumerate(stations):
-        dist = np.linalg.norm([lat, lon] - [station_latitude[i],station_longitude[i]])
+        dist = np.linalg.norm(np.array([lat, lon]) - np.array([station_latitude[i],station_longitude[i]]))
         if i == 0: 
             min_dist = dist
         if min_dist > dist:
