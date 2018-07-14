@@ -1,4 +1,5 @@
 from pymessenger.bot import Bot
+from app import user_query
 
 ACCESS_TOKEN = 'EAALU1QUBIuYBAGgTmLKgqdgFVw7iVu1t0DU1Tt5GT3xFVcx8TtjqX0SGcPfIu42lU3x1xTFhWcFgvyEpQuvjnLDZB3utNM5KIZBZBqVBMSCwcr7bdY5ZAY2npmwPfycPDfFqjbAZBqBP19nvuT2ZCF50d4juzA5jGY15Yloio2cVqwYAc6jOt1'
 VERIFY_TOKEN = 'eurekafille'
@@ -105,7 +106,10 @@ def parse_egress(recipient_id, ingress, slicing):
 
 def parse_final(recipient_id, ingress, egress, time_epoch=None):
     #plug in Titus' part
-    bot.send_text_message(recipient_id, 'In: {}\n Out: {}\nTime: {}'.format(ingress, egress, time_epoch))
+    #bot.send_text_message(recipient_id, 'In: {}\n Out: {}\nTime: {}'.format(ingress, egress, time_epoch))
+    texts = user_query.query(time_epoch, ingress, egress)
+    for text in texts:
+        bot.send_text_message(recipient_id, text)
 
 # def get_location(recipient_id, coordinates):
 #     lat = coordinates['lat']
