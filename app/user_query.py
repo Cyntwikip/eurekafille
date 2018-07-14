@@ -31,6 +31,9 @@ def query(time, station1, station2):
     scheds =  df_schedule.loc[df_schedule.loc[:, station1].apply(get_time)
                               >= get_time(time//1000), station1]
     
+    if len(scheds) == 0:
+        return ['There are no trains running at time. Operations will resume tomorrow at 4:00AM', 'Ingat po!']
+    
     scheds = scheds.apply(lambda x: dt.datetime.fromtimestamp(x)\
                                       .strftime('%I:%M%p')).head().values
     
