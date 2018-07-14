@@ -101,7 +101,7 @@ def parse_station(recipient_id, station):
                 "title": station,
                 "subtitle": "LRT Station",
                 "image_url": "https://maps.googleapis.com/maps/api/staticmap?key=" + GMAP_TOKEN +
-                "&markers=color:red|label:B|" + lat + "," + lon + "&size=360x360&zoom=13"
+                "&markers=color:red|label:B|" + str(lat) + "," + str(lon) + "&size=360x360&zoom=13"
                 }]
             }
         }
