@@ -48,6 +48,12 @@ def parse_ingress(recipient_id, slicing):
                 "payload":"DepartureIngress_Prev"+str(slicing-1)
             }
         )
+    else:
+        choices.append(
+            {
+                "content_type":"location"
+            }
+        )
     for choice in sliced_stations:
         choices.append(
             {

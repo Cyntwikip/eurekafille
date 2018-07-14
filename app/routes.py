@@ -6,9 +6,9 @@ from app import eurekabot
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
-        
+        return render_template('index.html')
         #return render_template('index.html', labels=labels, categories=cat_list)
-        return 'Get request'
+        #return 'Get request'
 
     elif request.method == 'POST':
         return 'Post request'
