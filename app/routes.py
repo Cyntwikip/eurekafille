@@ -44,6 +44,9 @@ def lrtbot():
         print("JSON input: ", output)
 
         for event in output['entry']:
+            if not event.get('messaging'):
+                print('UNHANDLED RESPONSE!')
+                break
             messaging = event['messaging']
             time_epoch = event['time']
             for message in messaging:
