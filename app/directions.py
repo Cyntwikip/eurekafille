@@ -106,7 +106,7 @@ def parse_station(recipient_id, station):
                     "default_action": {
                     "type": "web_url",
                     "url": url,
-                    "messenger_extensions": true,
+                    "messenger_extensions": True,
                     "webview_height_ratio": "tall"
                     }
                 }]
