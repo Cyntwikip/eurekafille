@@ -96,7 +96,7 @@ def parse_station(recipient_id, station):
         "&markers=color:red|label:B|" + str(lat) + "," + str(lon) + "&size=360x360&zoom=13"
     url_dynamic = "https://maps.googleapis.com/maps/api/staticmap?key=" + GMAP_TOKEN +\
         "&markers=color:red%7Clabel:A%7" + str(lat) + "," + str(lon) + "&size=360x360&zoom=13"
-    print(url)
+    print(url_dynamic)
     messageData = {
         "attachment": {
         "type": "template",
