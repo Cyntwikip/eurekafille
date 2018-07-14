@@ -58,7 +58,7 @@ def parse_ingress(recipient_id, slicing):
             {
                 "content_type":"text",
                 "title":"Previous",
-                "payload":"DirectionsIngress_Prev"+str(slicing-1)
+                "payload":"DirectionIngress_Prev"+str(slicing-1)
             }
         )
     else:
@@ -72,7 +72,7 @@ def parse_ingress(recipient_id, slicing):
             {
                 "content_type":"text",
                 "title":choice,
-                "payload":"DirectionsIngress_"+choice
+                "payload":"DirectionIngress_"+choice
             }
         )
     if chunk_size*(slicing+1) < len(stations):
@@ -80,11 +80,11 @@ def parse_ingress(recipient_id, slicing):
             {
                 "content_type":"text",
                 "title":"More...",
-                "payload":"DirectionsIngress_Next"+str(slicing+1)
+                "payload":"DirectionIngress_Next"+str(slicing+1)
             }
         )
     
-    out = quick_reply_template('Entry: '+choice, choices)
+    out = quick_reply_template('To which station?', choices)
     bot.send_message(recipient_id, out)
 
 def parse_station(recipient_id, station):

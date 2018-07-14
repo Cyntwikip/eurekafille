@@ -71,7 +71,7 @@ def parse_ingress(recipient_id, slicing):
             }
         )
     
-    out = quick_reply_template('Entry: '+choice, choices)
+    out = quick_reply_template('Which station are you coming from?', choices)
     bot.send_message(recipient_id, out)
 
 def parse_egress(recipient_id, ingress, slicing):
@@ -106,7 +106,7 @@ def parse_egress(recipient_id, ingress, slicing):
             }
         )
     
-    out = quick_reply_template('Exit:'+choice, choices)
+    out = quick_reply_template("What's your destination?", choices)
     bot.send_message(recipient_id, out)
 
 def parse_final(recipient_id, ingress, egress):
