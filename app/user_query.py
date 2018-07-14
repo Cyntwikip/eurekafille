@@ -34,9 +34,16 @@ def query(time, station1, station2):
     scheds = scheds.apply(lambda x: dt.datetime.fromtimestamp(x)\
                                       .strftime('%I:%M%p')).head().values
     
-    travel_time = df_distances.loc[(df_distances.start_station==station1)
-                                   & (df_distances.end_station==station2),
-                                   'travel_time'].values[0]
+    target1 = df_distances.loc[(df_distances.start_station==station1)
+                              & (df_distances.end_station==station2),
+                              'travel_time']
+    
+    target1 = df_distances.loc[(df_distances.start_station==station2)
+                              & (df_distances.end_station==station1),
+                              'travel_time']
+    
+    travel_time = target1.values[0] if len(target1) != 0 else\
+                    target2.values[0]
     
     queue_people = df_queue.loc[(df_queue.station==station1) &
                                 (df_queue.Timestamp.apply(get_time)
