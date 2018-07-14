@@ -88,7 +88,7 @@ def parse_response(recipient_id, response):
         send_message(recipient_id, get_default_message())
     return
 
-def parse_quickreply(recipient_id, payload):
+def parse_quickreply(recipient_id, payload, time_epoch):
     '''
     Parses the user's quick reply response.
     '''        
@@ -118,7 +118,7 @@ def parse_quickreply(recipient_id, payload):
             slicing = egress.replace('Prev', '')
             departures.parse_egress(recipient_id, ingress, int(slicing))
         else:
-            departures.parse_final(recipient_id, ingress, egress)
+            departures.parse_final(recipient_id, ingress, egress, time_epoch)
     # postback for request directions
     elif len(response_splitted)==2 and response_splitted[0]=='DirectionIngress':
         ingress = response_splitted[1]

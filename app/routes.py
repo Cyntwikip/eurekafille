@@ -41,6 +41,7 @@ def lrtbot():
 
         for event in output['entry']:
             messaging = event['messaging']
+            time_epoch = event['time']
             for message in messaging:
                 recipient_id = message['sender']['id']
                 
@@ -56,7 +57,7 @@ def lrtbot():
                     print(quick_reply)
                     if quick_reply and quick_reply.get('payload'):
                         payload = quick_reply.get('payload')
-                        eurekabot.parse_quickreply(recipient_id, payload)
+                        eurekabot.parse_quickreply(recipient_id, payload, time_epoch)
                         break
 
                     #Facebook Messenger ID for user so we know where to send response back to

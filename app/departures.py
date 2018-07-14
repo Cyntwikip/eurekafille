@@ -48,12 +48,6 @@ def parse_ingress(recipient_id, slicing):
                 "payload":"DepartureIngress_Prev"+str(slicing-1)
             }
         )
-    # else:
-    #     choices.append(
-    #         {
-    #             "content_type":"location"
-    #         }
-    #     )
     for choice in sliced_stations:
         choices.append(
             {
@@ -109,8 +103,9 @@ def parse_egress(recipient_id, ingress, slicing):
     out = quick_reply_template("What's your destination?", choices)
     bot.send_message(recipient_id, out)
 
-def parse_final(recipient_id, ingress, egress):
-    bot.send_text_message(recipient_id, 'In: {}, Out: {}'.format(ingress, egress))
+def parse_final(recipient_id, ingress, egress, time_epoch=None):
+    #plug in Titus' part
+    bot.send_text_message(recipient_id, 'In: {}\n Out: {}\nTime: {}'.format(ingress, egress, time_epoch))
 
 # def get_location(recipient_id, coordinates):
 #     lat = coordinates['lat']
