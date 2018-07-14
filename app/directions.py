@@ -105,12 +105,13 @@ def parse_station(recipient_id, station):
                     "title": station,
                     "subtitle": "LRT Station",
                     "image_url": url_static,
-                    "default_action": {
-                        "type": "web_url",
-                        "url": url_dynamic,
-                        "messenger_extensions": True,
-                        "webview_height_ratio": "tall"
-                    }
+                    "item_url": url_dynamic
+                    # "default_action": {
+                    #     "type": "web_url",
+                    #     "url": url_dynamic,
+                    #     "messenger_extensions": True,
+                    #     "webview_height_ratio": "tall"
+                    # }
                 }]
             }
         }
