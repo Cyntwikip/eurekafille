@@ -14,8 +14,9 @@ df_queue = pd.read_csv('df_passengers_per_min_per_station.csv')
 # check load factor: light, moderate, heavy
 # note: currently hardcoded for demonstration purposes but can be
 # computed using machine learning techniques given the datasets
+# check load factor: light, moderate, heavy
 def check_load_factor(time, is_raining=False, is_weekday=True):
-    h = int(dt.datetime.fromtimestamp(time).strftime('%H'))
+    h = int(dt.datetime.fromtimestamp(time//1000).strftime('%H'))
     if (h >= 11 and h < 15) or (h >= 21):
         return 'lightly'
     elif (h < 7) or (h >= 9 and h < 11) or (h >= 15 and h < 16)\
@@ -24,18 +25,22 @@ def check_load_factor(time, is_raining=False, is_weekday=True):
     else:
         return 'heavy'
     
+get_time = lambda x: dt.datetime.fromtimestamp(x).time()
+    
 def query(time, station1, station2):
-    scheds =  df_schedule.loc[df_schedule.loc[:, station1]
-                              >= time, station1].iloc[:5]
+    scheds =  df_schedule.loc[df_schedule.loc[:, station1].apply(get_time)
+                              >= get_time(time//1000), station1]
+    
     scheds = scheds.apply(lambda x: dt.datetime.fromtimestamp(x)\
-                                      .strftime('%I:%M%p')).values
+                                      .strftime('%I:%M%p')).head().values
     
     travel_time = df_distances.loc[(df_distances.start_station==station1)
                                    & (df_distances.end_station==station2),
                                    'travel_time'].values[0]
     
     queue_people = df_queue.loc[(df_queue.station==station1) &
-                                (df_queue.Timestamp >= time)]\
+                                (df_queue.Timestamp.apply(get_time)
+                                 >= get_time(time//1000))]\
                             .sort_values('Timestamp').head(15).card_num.sum()
     
     
