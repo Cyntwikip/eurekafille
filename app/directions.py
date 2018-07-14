@@ -92,8 +92,11 @@ def parse_station(recipient_id, station):
     station_index = stations.index(station)
     lat = station_latitude[station_index]
     lon = station_longitude[station_index]
-    url = "https://maps.googleapis.com/maps/api/staticmap?key=" + GMAP_TOKEN +\
+    url_static = "https://maps.googleapis.com/maps/api/staticmap?key=" + GMAP_TOKEN +\
         "&markers=color:red|label:B|" + str(lat) + "," + str(lon) + "&size=360x360&zoom=13"
+    url_dynamic = "https://maps.googleapis.com/maps/api/staticmap?key=" + GMAP_TOKEN +\
+        "&markers=color:red%7Clabel:A%7" + str(lat) + "," + str(lon) + "&size=360x360&zoom=13"
+    print(url)
     messageData = {
         "attachment": {
         "type": "template",
@@ -102,12 +105,12 @@ def parse_station(recipient_id, station):
                 "elements": [{
                     "title": station,
                     "subtitle": "LRT Station",
-                    "image_url": url,
+                    "image_url": url_static,
                     "default_action": {
-                    "type": "web_url",
-                    "url": url,
-                    "messenger_extensions": True,
-                    "webview_height_ratio": "tall"
+                        "type": "web_url",
+                        "url": url_dynamic,
+                        "messenger_extensions": True,
+                        "webview_height_ratio": "tall"
                     }
                 }]
             }
