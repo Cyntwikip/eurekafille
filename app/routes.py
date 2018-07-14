@@ -17,6 +17,10 @@ def index():
 
     return '<h2>Request method type not supported</h2>' 
     
+@app.route('/privacy', methods=['GET'])
+def privacy():
+    return render_template('privacy.html')
+
 @app.route('/api/lrtbot', methods=['GET','POST'])
 def lrtbot():
     #print('LRT Bot')
