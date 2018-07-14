@@ -35,8 +35,8 @@ def query(time, station1, station2):
                                    'travel_time'].values[0]
     
     queue_people = df_queue.loc[(df_queue.station==station1) &
-                                (df_queue.timestamp >= time)]\
-                            .sort_values('timestamp').head(15).card_num.sum()
+                                (df_queue.Timestamp >= time)]\
+                            .sort_values('Timestamp').head(15).card_num.sum()
     
     
     queue = int((queue_people / 150) * 3 // 1)
