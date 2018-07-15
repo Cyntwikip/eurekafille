@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, json, url_for, redirect, session, render_template
 from pymessenger.bot import Bot
-from app import departures, directions
+from app import departures, directions, quiz
+import random
 
 ACCESS_TOKEN = 'EAALU1QUBIuYBAGgTmLKgqdgFVw7iVu1t0DU1Tt5GT3xFVcx8TtjqX0SGcPfIu42lU3x1xTFhWcFgvyEpQuvjnLDZB3utNM5KIZBZBqVBMSCwcr7bdY5ZAY2npmwPfycPDfFqjbAZBqBP19nvuT2ZCF50d4juzA5jGY15Yloio2cVqwYAc6jOt1'
 VERIFY_TOKEN = 'eurekafille'
@@ -19,7 +20,17 @@ def get_default_message():
     '''
     Default message
     '''
-    return "This is LRT chatbot"
+    msg = [
+        '''Did you know? LRT1 is the oldest running railway company in the Philippines? That’s your LRT1 Fact for the day! Please type ‘start’ to get started!''',
+        '''At LRT1, we aim to give commuters #BiyahengBetterEveryday because you all deserve it! Now, please type ‘start’ to get started!''',
+        '''Trivia Time! There are over 500,000 passengers daily riding the LRT1 with you! Please type ‘start’ to get started!''',
+        '''You can do it! Whatever you’re going through right now, there will be better days ahead. #WeCare #BiyahengBetterEveryday. Please type ‘start’ to get started!''',
+        '''We’re improving everyday! It’s our aim to give you #BiyahengBetterEveryday. Please type ‘start’ to get started!''',
+        '''Move on, move on din, bes! Just like the  LRT trains you might miss if you don’t hurry up! Please type ‘start’ to get started.''',
+        '''Umulan man, aaraw din! Today is a great day! Please type ‘start’ to get started.''',
+        '''Hi! How are you today? Please type ‘start’ to get started.'''
+        ]
+    return random.choice(msg)
 
 #uses PyMessenger to send response to user
 def send_message(recipient_id, response):
@@ -52,6 +63,27 @@ def parse_postbacks(recipient_id, postback):
         ]
         bot.send_button_message(recipient_id, 'Hi! How may I help you?', choices)
 
+    elif postback == 'EUREKAFILLE_QUIZ':
+        choices = [
+            {
+                "type":"postback",
+                "title":"Yes, bring it on!",
+                "payload":"Quiz_Accept"
+            },
+            {
+                "type":"postback",
+                "title":"No, I’m good.",
+                "payload":"Quiz_Reject"
+            }
+        ]
+        bot.send_button_message(recipient_id, 'Want to check out today’s COFFEE TRIVIA QUIZ?', choices)
+
+    elif postback == "Quiz_Accept":
+        quiz.start_game(recipient_id)
+    elif postback == "Quiz_Reject":
+        bot.send_text_message(recipient_id, 'Thank you! See you next time.')
+    elif postback_splitted[0] == "QuizAnswer":
+        quiz.answer_question(recipient_id, postback_splitted[1])
     elif postback == 'Request_Directions':
         directions.directions_menu(recipient_id)
     elif postback == 'Request_Time':
@@ -81,11 +113,18 @@ def parse_response(recipient_id, response):
     '''
     Parses the user's response.
     '''        
-    if response.lower() == 'start':
+    start = ['start', 'ok', 'good morning', 'good afternoon', 
+    'good evening', 'game', 'g', 'yes', 'hi', 'hello', 'hey']
+    if response.lower() in start:
         print('Get Started will be displayed! :)')
         parse_postbacks(recipient_id, 'EUREKAFILLE')
+    elif response.lower() == 'quiz':
+        print('Quiz will be displayed! :)')
+        parse_postbacks(recipient_id, 'EUREKAFILLE_QUIZ')
     else:
         send_message(recipient_id, get_default_message())
+        #print('Get Started will be displayed! :)')
+        #parse_postbacks(recipient_id, 'EUREKAFILLE')
     return
 
 def parse_quickreply(recipient_id, payload, time_epoch):

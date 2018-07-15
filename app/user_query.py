@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import datetime as dt
+import pytz
 
 # when is the next train coming?
 df_schedule = pd.read_csv('train_schedules.csv')
@@ -16,7 +17,9 @@ df_queue = pd.read_csv('df_passengers_per_min_per_station.csv')
 # computed using machine learning techniques given the datasets
 # check load factor: light, moderate, heavy
 def check_load_factor(time, is_raining=False, is_weekday=True):
-    h = int(dt.datetime.fromtimestamp(time//1000).strftime('%H'))
+    h = int(dt.datetime.fromtimestamp(time//1000,
+                                      tz=pytz.timezone('Asia/Manila'))\
+                        .strftime('%H'))
     if (h >= 11 and h < 15) or (h >= 21):
         return 'lightly'
     elif (h < 7) or (h >= 9 and h < 11) or (h >= 15 and h < 16)\
@@ -25,7 +28,7 @@ def check_load_factor(time, is_raining=False, is_weekday=True):
     else:
         return 'heavy'
     
-get_time = lambda x: dt.datetime.fromtimestamp(x).time()
+get_time = lambda x: dt.datetime.fromtimestamp(x, tz=pytz.timezone('Asia/Manila')).time()
     
 def query(time, station1, station2):
     scheds =  df_schedule.loc[df_schedule.loc[:, station1].apply(get_time)
@@ -34,7 +37,7 @@ def query(time, station1, station2):
     if len(scheds) == 0:
         return ['There are no trains running at time. Operations will resume tomorrow at 4:00AM', 'Ingat po!']
     
-    scheds = scheds.apply(lambda x: dt.datetime.fromtimestamp(x)\
+    scheds = scheds.apply(lambda x: dt.datetime.fromtimestamp(x, tz=pytz.timezone('Asia/Manila'))\
                                       .strftime('%I:%M%p')).head().values
     
     target1 = df_distances.loc[(df_distances.start_station==station1)
@@ -69,4 +72,3 @@ def query(time, station1, station2):
     msg += 'Ingat po sa byahe!'
     
     return msg.split('. ')
-
