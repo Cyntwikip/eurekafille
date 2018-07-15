@@ -6,7 +6,7 @@ VERIFY_TOKEN = 'eurekafille'
 bot = Bot(ACCESS_TOKEN)
 
 questions = ['Which coffeeshop brand recently declared war against plastic straws? #singleuse #notostraws# sustainability']
-answers = [['Star Frappes','Starbucks Coffee']]
+answers = ['Star Frappes','Starbucks Coffee']
 
 def quick_reply_template(text, choices):
     return {
