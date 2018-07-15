@@ -82,8 +82,8 @@ def parse_postbacks(recipient_id, postback):
         quiz.start_game(recipient_id)
     elif postback == "Quiz_Reject":
         bot.send_text_message(recipient_id, 'Thank you! See you next time.')
-    elif postback_splitted[0] == "QuizAnswer":
-        quiz.answer_question(recipient_id, postback_splitted[1])
+    # elif postback_splitted[0] == "QuizAnswer":
+    #     quiz.answer_question(recipient_id, postback_splitted[1])
     elif postback == 'Request_Directions':
         directions.directions_menu(recipient_id)
     elif postback == 'Request_Time':
@@ -170,6 +170,8 @@ def parse_quickreply(recipient_id, payload, time_epoch):
             directions.parse_ingress(recipient_id, int(slicing))
         else:
             directions.parse_station(recipient_id, ingress)
+    elif response_splitted[0] == "QuizAnswer":
+        quiz.answer_question(recipient_id, response_splitted[1])
     # if 1==2:
     #     pass
     else:
