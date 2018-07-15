@@ -33,7 +33,7 @@ def start_game(recipient_id):
 
 def answer_question(recipient_id, answer):
     if answer != answers[1]:
-        bot.send_text_message(recipient_id, 'LRT1: Wrong! Please try again later')
+        bot.send_text_message(recipient_id, 'Wrong! Please try again later')
     else:
         bot.send_text_message(recipient_id, 'Correct!')
         bot.send_text_message(recipient_id, 'Present this message to any Starbucks Coffee branch and receive a Free Grande upgrade on your next drink! CODE: ITSTHELASTSTRAW PER DTI-FTRB SPD PERMIT No. 13756. Series of 2018.')
